@@ -1,6 +1,7 @@
 const axios = require('axios');
 const crypto = require('crypto');
 const cron = require('node-cron');
+const { sendPushNotification } = require('./messaging');
 require('dotenv').config();
 const PAIRS = {
     'CAKEUSDT': { pair: 'cakeusdt', coin: 'cake', market: 'CAKE', usdValue: 10 },
@@ -189,12 +190,15 @@ class QuidaxDCABot {
 
             console.log(`DCA Execute Success:
                 Time: ${new Date().toISOString()}
-                Quantity: ${quantity} USDT
+                Quantity: ${currencyPairData.pair} USDT
                 Price: ${currentPrice} CAKE`);
             console.log('Order:', confirmOrder);
+
+            sendPushNotification("DCA Order Executed 💸✅", `Bought ${currencyPairData.market} for ${currencyPairData.usdValue} ${BASE_CURRENCY} at ${currentPrice}`);
             return order;
         } catch (error) {
             //nudge OJ to take action
+            sendPushNotification("DCA Order Failed 🤧🚨", `${error}`);
 
             console.error('Error executing DCA:', error);
             // Implement your error notification system here
