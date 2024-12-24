@@ -106,10 +106,10 @@ class QuidaxDCABot {
 
             if (type == TYPE.BUY) {
                 exData = { 'total': amount };
-                unit = ask;
+                unit = BASE_CURRENCY;
             } else if (type == TYPE.SELL) {
                 exData = { 'volume': amount };
-                unit = BASE_CURRENCY;
+                unit = ask;
             } else {
                 throw 'Invalid type';
             }
