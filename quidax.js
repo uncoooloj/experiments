@@ -191,7 +191,7 @@ class QuidaxDCABot {
                 Time: ${new Date().toISOString()}
                 Quantity: ${currencyPairData.pair} USDT
                 Price: ${currentPrice} CAKE`);
-            console.log('Order:', confirmOrder);
+            console.log('Order:', JSON.stringify(confirmOrder));
 
             sendPushNotification("DCA Order Executed 💸✅", `Bought ${currencyPairData.market} for ${currencyPairData.usdValue} ${BASE_CURRENCY} at ${currentPrice}`);
             return order;
