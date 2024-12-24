@@ -62,7 +62,7 @@ class QuidaxDCABot {
                 }
             };
 
-            if (method === method.POST || method === method.PUT) {
+            if (method === HTTP_METHODS.POST || method === HTTP_METHODS.PUT) {
                 axiosData.data = data;
             }
             console.log('axiosData:', axiosData);
