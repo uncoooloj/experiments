@@ -222,8 +222,7 @@ class QuidaxDCABot {
     }
 }
 
-// Fix export syntax using CommonJS
-async function startBot() {
+function startBot() {
     // Load from environment variables
     const apiKey = process.env.QUIDAX_API_KEY;
     const secretKey = process.env.QUIDAX_SECRET_KEY;
@@ -237,10 +236,7 @@ async function startBot() {
     const bot = new QuidaxDCABot(apiKey, secretKey, dcaAmount);
 
     // Start weekly DCA
-    await bot.startSchedule(PAIRS.CAKEUSDT);
+    bot.startSchedule(PAIRS.CAKEUSDT);
 }
 
 module.exports = startBot;
-
-// Start the bot
-// startBot();
