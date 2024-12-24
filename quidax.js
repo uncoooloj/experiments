@@ -77,7 +77,10 @@ class QuidaxDCABot {
     async getCurrentPrice(pair, type) {
         try {
             const response = await this.makeRequest('GET', `/markets/tickers/${pair}`);
-            return parseFloat(response?.data?.ticker[type]);
+            if (response?.status == 'success') {
+                return parseFloat(response?.data?.ticker[type]);
+            }
+            throw response.message;
         } catch (error) {
             console.error('Error fetching price:', error);
             throw error;
@@ -126,14 +129,10 @@ class QuidaxDCABot {
             console.log(`order :::`, JSON.stringify({ dataToSend }));
 
             const response = await this.makeRequest(HTTP_METHODS.POST, '/users/me/instant_orders', dataToSend);
-            let { status, message, data } = response.data;
+            let { status, message, data } = response;
             console.log(`order response :::`, JSON.stringify({ request: { dataToSend }, response: { status, message, data } }));
 
-            if (status == 'success') {
-                return response.data;
-            } else {
-                return false;
-            }
+            return data;
         } catch (e) {
             console.log(`order::Error: `, e);
             throw e;
@@ -143,26 +142,17 @@ class QuidaxDCABot {
     async confirmOrder(orderId) {
         try {
             console.log(`confirming order :::`, JSON.stringify({ orderId }));
-            let response = await axios({
-                method: 'post',
-                url: `${process.env.QUIDAX_ENDPOINT}/api/${process.env.QUIDAX_VERSION}/users/${process.env.QUIDAX_USERID}/instant_orders/${orderId}/confirm`,
-                headers: {
-                    Authorization: `Bearer ${process.env.QUIDAX_SK}`
-                }
-            });
 
+            const response = await this.makeRequest(HTTP_METHODS.POST, `/users/me/instant_orders/${orderId}/confirm`);
 
-            let { status, message, data } = response.data;
+            let { status, message, data } = response;
 
             console.log(`confirming order response :::`, JSON.stringify({ request: { orderId }, response: { status, message, data } }));
 
-            if (status == 'success') {
-                return response.data;
-            } else {
-                return false;
-            }
+            return response.data;
         } catch (e) {
-            console.log(`confirmOrder::Error: `, e.message);
+            console.log(`confirmOrder::Error: `, e);
+            throw e;
         }
     }
 
@@ -178,7 +168,7 @@ class QuidaxDCABot {
 
     async executeDCA(currencyPairData) {
         try {
-            // Get current USDT balance
+            // 1.Get current USDT balance
             const usdtBalance = await this.getWalletBalance('usdt');
             console.log('USDT balance:', usdtBalance);
 
@@ -186,26 +176,29 @@ class QuidaxDCABot {
                 // throw 'Insufficient USDT balance';
             }
 
-            // 1. Get current CAKE price
+            // 2. Get current CAKE price
             const currentPrice = await this.getCurrentPrice(currencyPairData.pair, TYPE.BUY);
             console.log('Current price:', currentPrice);
-            
 
-            // 2. Order DCA amount
+
+            // 3. Order DCA amount
             const order = await this.order(TYPE.BUY, currencyPairData.usdValue, currencyPairData.coin);
+
+            // 4. Confirm Order
+            const confirmOrder = await this.confirmOrder(order.id);
 
             console.log(`DCA Execute Success:
                 Time: ${new Date().toISOString()}
                 Quantity: ${quantity} USDT
                 Price: ${currentPrice} CAKE`);
-            console.log('Order:', order);
+            console.log('Order:', confirmOrder);
             return order;
         } catch (error) {
             //nudge OJ to take action
 
             console.error('Error executing DCA:', error);
             // Implement your error notification system here
-            throw error;
+            // throw error;
         }
     }
 
