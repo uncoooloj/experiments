@@ -66,7 +66,6 @@ class QuidaxDCABot {
             if (method === HTTP_METHODS.POST || method === HTTP_METHODS.PUT) {
                 axiosData.data = data;
             }
-            console.log('axiosData:', axiosData);
             const response = await axios(axiosData);
             return response.data;
         } catch (error) {
