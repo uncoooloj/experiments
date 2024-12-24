@@ -4,16 +4,16 @@ const cron = require('node-cron');
 const { sendPushNotification } = require('./messaging');
 require('dotenv').config();
 const PAIRS = {
-    'CAKEUSDT': { pair: 'cakeusdt', coin: 'cake', market: 'CAKE', usdValue: 10 },
-    'BTCUSDT': { pair: 'btcusdt', coin: 'btc', market: 'BTC', usdValue: 10 },
-    'ETHUSDT': { pair: 'ethusdt', coin: 'eth', market: 'ETH', usdValue: 10 },
-    'XRPUSDT': { pair: 'xrpusdt', coin: 'xrp', market: 'XRP', usdValue: 10 },
-    'DOGEUSDT': { pair: 'dogeusdt', coin: 'doge', market: 'DOGE', usdValue: 10 },
-    'SOLUSDT': { pair: 'solusdt', coin: 'sol', market: 'SOL', usdValue: 10 },
-    'ADAUSDT': { pair: 'adausdt', coin: 'ada', market: 'ADA', usdValue: 10 },
-    'DOTUSDT': { pair: 'dotusdt', coin: 'dot', market: 'DOT', usdValue: 10 },
-    'XLMUSDT': { pair: 'xlmusdt', coin: 'xlm', market: 'XLM', usdValue: 10 },
-    'LINKUSDT': { pair: 'linkusdt', coin: 'link', market: 'LINK', usdValue: 10 },
+    'CAKEUSDT': { pair: 'cakeusdt', coin: 'cake', market: 'CAKE', usdValue: 5 },
+    'BTCUSDT': { pair: 'btcusdt', coin: 'btc', market: 'BTC', usdValue: 5 },
+    'ETHUSDT': { pair: 'ethusdt', coin: 'eth', market: 'ETH', usdValue: 5 },
+    'XRPUSDT': { pair: 'xrpusdt', coin: 'xrp', market: 'XRP', usdValue: 5 },
+    'DOGEUSDT': { pair: 'dogeusdt', coin: 'doge', market: 'DOGE', usdValue: 5 },
+    'SOLUSDT': { pair: 'solusdt', coin: 'sol', market: 'SOL', usdValue: 5 },
+    'ADAUSDT': { pair: 'adausdt', coin: 'ada', market: 'ADA', usdValue: 5 },
+    'DOTUSDT': { pair: 'dotusdt', coin: 'dot', market: 'DOT', usdValue: 5 },
+    'XLMUSDT': { pair: 'xlmusdt', coin: 'xlm', market: 'XLM', usdValue: 5 },
+    'LINKUSDT': { pair: 'linkusdt', coin: 'link', market: 'LINK', usdValue: 5 },
 }
 
 const HTTP_METHODS = {
