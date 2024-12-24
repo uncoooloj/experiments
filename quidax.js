@@ -54,13 +54,10 @@ class QuidaxDCABot {
 
         try {
             const axiosData = {
-                method: method,
+                method,
                 url: `${this.baseUrl}${endpoint}`,
                 headers: {
                     Authorization: `Bearer ${this.apiKey}`,
-                    // 'ACCESS-KEY': this.apiKey,
-                    // 'ACCESS-TIMESTAMP': timestamp,
-                    // 'ACCESS-SIGN': signature,
                     'Content-Type': 'application/json'
                 }
             };
@@ -68,6 +65,7 @@ class QuidaxDCABot {
             if (method === method.POST || method === method.PUT) {
                 axiosData.data = data;
             }
+            console.log('axiosData:', axiosData);
             const response = await axios(axiosData);
             return response.data;
         } catch (error) {
@@ -79,7 +77,6 @@ class QuidaxDCABot {
     async getCurrentPrice(pair, type) {
         try {
             const response = await this.makeRequest('GET', `/markets/tickers/${pair}`);
-            console.log('getCurrentPrice:', response.data);
             return parseFloat(response?.data?.ticker[type]);
         } catch (error) {
             console.error('Error fetching price:', error);
@@ -128,7 +125,7 @@ class QuidaxDCABot {
 
             console.log(`order :::`, JSON.stringify({ dataToSend }));
 
-            const response = await this.makeRequest('POST', '/users/me/instant_orders', dataToSend);
+            const response = await this.makeRequest(HTTP_METHODS.POST, '/users/me/instant_orders', dataToSend);
             let { status, message, data } = response.data;
             console.log(`order response :::`, JSON.stringify({ request: { dataToSend }, response: { status, message, data } }));
 
