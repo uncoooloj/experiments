@@ -19,9 +19,11 @@ app.get('/', (req, res , next) => {
         message: 'Welcome to OJ\'s experiments'
     });
 });
-app.get('/quidax', (req, res , next) => {
-    quidaxBot();
-    res.send('Quidax bot started');
+app.get('/quidax', async (req, res , next) => {
+    await quidaxBot();
+    res.json({
+        message: 'Quidax Bot Started'
+    });
 });
 
 // Error handler - simplified to just return JSON
