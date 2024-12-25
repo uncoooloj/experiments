@@ -173,7 +173,7 @@ class QuidaxDCABot {
             console.log('USDT balance:', usdtBalance);
 
             if (usdtBalance < currencyPairData.usdValue) {
-                // throw 'Insufficient USDT balance';
+                throw 'Insufficient USDT balance';
             }
 
             // 2. Get current CAKE price
